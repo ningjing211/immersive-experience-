@@ -240,27 +240,59 @@ export default function ImmersiveExperience() {
         </div>
       </div>
 
-      {/* 新增：垂直滚动页面 */}
+      {/* 新增：垂直滾動頁面 */}
       <div 
-        className="fixed inset-0 bg-black z-[60] flex flex-col items-center justify-center"
+        className="fixed inset-0 z-[60] flex items-start justify-start"
         style={{
           transform: `translateY(${showVerticalPage ? '0' : '100%'})`,
-          transition: 'transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)',
+          transition: 'transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.6s ease-in-out',
           opacity: showVerticalPage ? 1 : 0,
         }}
       >
-        <div className="w-full h-full absolute">
-          <img 
-            src="/path-to-your-image.jpg" 
-            alt="Full screen background" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/50"></div>
-        </div>
-        
-        <div className="relative z-10 text-center max-w-4xl px-4">
-          <h1 className="text-5xl font-light mb-8">新页面标题</h1>
-          <p className="text-xl">这是一个新的垂直滚动页面，当您向下滚动时会平滑过渡显示。向上滚动可以返回到主体验页面。</p>
+        <div className="w-[90%] h-[90%] ml-0 bg-white relative overflow-auto rounded-r-lg shadow-2xl mt-[10%]">
+          <div className="p-16">
+            <h1 className="text-6xl font-bold text-black mb-12">Experience</h1>
+            
+            <div className="flex flex-wrap">
+              {/* 左側內容區域 */}
+              <div className="w-full md:w-1/2 mb-8 md:mb-0 pr-0 md:pr-8">
+                <div className="text-black text-3xl font-bold mb-8">
+                  <p>strategy<br/>
+                  reliability<br/>
+                  expertise<br/>
+                  durability</p>
+                </div>
+                
+                <div className="text-black text-lg">
+                  <p className="font-medium mb-4">OUR SERVICES</p>
+                  <p>brand positioning<br/>
+                  360° strategy / ecosystem<br/>
+                  PRM & CRM</p>
+                </div>
+              </div>
+              
+              {/* 右側內容區域 */}
+              <div className="w-full md:w-1/2">
+                <div className="mb-8">
+                  <p className="text-black text-2xl font-medium mb-6">Experience that serves brands</p>
+                  
+                  <p className="text-black text-base leading-relaxed">
+                    我們相信品牌的潛力和在不同媒體上存在的力量。我們的信念在於掌握和理解品牌、其價值觀和抱負，以便能夠支持其整體傳播。這種意識使我們能夠保持品牌的本質和形象，從而提供一個智能策略，並回應一個不斷發展的需求高的受眾。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* 關閉按鈕 */}
+          <button 
+            className="absolute top-8 right-8 text-black flex items-center"
+            onClick={() => setShowVerticalPage(false)}
+          >
+            <span className="mr-2">關閉</span>
+            <div className="w-6 h-px bg-black transform rotate-45"></div>
+            <div className="w-6 h-px bg-black transform -rotate-45 -ml-6"></div>
+          </button>
         </div>
       </div>
 
