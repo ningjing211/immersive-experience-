@@ -110,10 +110,10 @@ export default function ImmersiveExperience() {
       <header className="fixed top-0 left-0 w-full px-8 py-7 flex justify-between items-center z-50 backdrop-blur-sm">
         <div className="flex items-center">
           <div className="relative w-7 h-7 mr-2.5">
-            <div className="absolute top-0 left-0 w-2 h-2 bg-white"></div>
-            <div className="absolute top-0 right-0 w-2 h-2 bg-white"></div>
-            <div className="absolute bottom-0 right-0 w-2 h-2 bg-white"></div>
-            <div className="absolute bottom-0 left-0 w-2 h-2 bg-white"></div>
+            <div className="absolute top-0 left-0 w-full h-0.5 bg-white"></div>
+            <div className="absolute bottom-0 left-0 w-full h-0.5 bg-white"></div>
+            <div className="absolute left-0 top-0 h-full w-0.5 bg-white"></div>
+            <div className="absolute top-1/2 left-1/2 w-1.5 h-1.5 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
           </div>
           <span className="text-sm font-medium">Take 2</span>
         </div>
@@ -184,16 +184,6 @@ export default function ImmersiveExperience() {
                     {sectionDescriptions[index]}
                   </p>
                 )}
-
-                {index === 0 && (
-                  <button
-                    className={`absolute bottom-24 left-1/2 transform -translate-x-1/2 border border-white/30 bg-transparent text-white py-2 px-4 text-sm tracking-wider flex items-center gap-2 hover:bg-white/10 transition-all duration-300 backdrop-blur-sm z-40 ${currentPage === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}
-                    onClick={handleNext}
-                  >
-                    <span>See reflection</span>
-                    <span>→</span>
-                  </button>
-                )}
               </div>
             </section>
           ))}
@@ -217,17 +207,6 @@ export default function ImmersiveExperience() {
         >
           →
         </div>
-      </div>
-
-      {/* Page indicator */}
-      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2.5 z-50">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div
-            key={index}
-            className={`w-10 h-px transition-all duration-500 cursor-pointer ${currentPage === index ? "bg-white" : "bg-white/30"}`}
-            onClick={() => updateActivePage(index)}
-          ></div>
-        ))}
       </div>
 
       {/* Scroll prompt - only visible on first page */}
@@ -254,8 +233,8 @@ export default function ImmersiveExperience() {
             <h1 className="text-6xl font-bold text-black mb-12">Experience</h1>
             
             <div className="flex flex-wrap">
-              {/* 左側內容區域 */}
-              <div className="w-full md:w-1/2 mb-8 md:mb-0 pr-0 md:pr-8">
+              {/* 左側內容區域 - A 區塊 */}
+              <div className="w-full md:w-2/5 mb-8 md:mb-0 pr-0 md:pr-8">
                 <div className="text-black text-3xl font-bold mb-8">
                   <p>strategy<br/>
                   reliability<br/>
@@ -271,12 +250,12 @@ export default function ImmersiveExperience() {
                 </div>
               </div>
               
-              {/* 右側內容區域 */}
-              <div className="w-full md:w-1/2">
+              {/* 右側內容區域 - B 區塊 */}
+              <div className="w-full md:w-3/5">
                 <div className="mb-8">
                   <p className="text-black text-2xl font-medium mb-6">Experience that serves brands</p>
                   
-                  <p className="text-black text-base leading-relaxed">
+                  <p className="text-black text-base leading-relaxed" style={{ width: 'calc(4/5 * 100%)' }}>
                     我們相信品牌的潛力和在不同媒體上存在的力量。我們的信念在於掌握和理解品牌、其價值觀和抱負，以便能夠支持其整體傳播。這種意識使我們能夠保持品牌的本質和形象，從而提供一個智能策略，並回應一個不斷發展的需求高的受眾。
                   </p>
                 </div>
@@ -296,13 +275,13 @@ export default function ImmersiveExperience() {
         </div>
       </div>
 
-      {/* 静音按钮 */}
+      {/* 靜音按鈕 */}
       <button
         className="fixed bottom-8 right-8 z-[70] text-xs font-light tracking-wider lowercase opacity-80 cursor-pointer hover:opacity-100 transition-opacity duration-300 py-2 px-4 border border-white/30 rounded-full backdrop-blur-sm"
         onClick={toggleSound}
-        aria-label={soundOn ? "静音" : "播放声音"}
+        aria-label={soundOn ? "mute" : "sound"}
       >
-        {soundOn ? "静音" : "播放声音"}
+        {soundOn ? "mute" : "sound"}
       </button>
 
       <style jsx>{`
