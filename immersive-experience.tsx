@@ -6,6 +6,7 @@ export default function ImmersiveExperience() {
   const [currentPage, setCurrentPage] = useState(0)
   const [soundOn, setSoundOn] = useState(true) // 开始时声音开启
   const [showVerticalPage, setShowVerticalPage] = useState(false) // 新增：控制垂直页面显示
+  const [menuOpen, setMenuOpen] = useState(false) // 新增：控制菜單顯示
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRefs = useRef<Array<HTMLIFrameElement | null>>([])
   const audioRef = useRef<HTMLIFrameElement | null>(null)
@@ -149,6 +150,17 @@ export default function ImmersiveExperience() {
     return () => document.removeEventListener("keydown", handleKeyDown)
   }, [currentPage])
 
+  // 切換菜單顯示狀態
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  }
+
+  // 從菜單選擇頁面
+  const selectPageFromMenu = (index: number) => {
+    updateActivePage(index);
+    setMenuOpen(false); // 選擇後關閉菜單
+  }
+
   return (
     <div className="relative bg-black text-white">
       <header className="fixed top-0 left-0 w-full px-8 py-7 flex justify-between items-center z-50 backdrop-blur-sm">
@@ -162,15 +174,98 @@ export default function ImmersiveExperience() {
           <span className="text-sm font-medium">One One </span>
         </div>
 
-        <div className="flex items-center cursor-pointer">
+        <div 
+          className="flex items-center cursor-pointer z-[80]"
+          onClick={toggleMenu}
+        >
           <span className="mr-2.5 text-sm font-medium">menu</span>
           <div className="flex flex-col gap-1.5">
-            <div className="w-5 h-px bg-white"></div>
-            <div className="w-5 h-px bg-white"></div>
-            <div className="w-5 h-px bg-white"></div>
+            <div className={`w-5 h-px bg-white transition-all duration-300 ${menuOpen ? 'transform rotate-45 translate-y-1.5' : ''}`}></div>
+            <div className={`w-5 h-px bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : 'opacity-100'}`}></div>
+            <div className={`w-5 h-px bg-white transition-all duration-300 ${menuOpen ? 'transform -rotate-45 -translate-y-1.5' : ''}`}></div>
           </div>
         </div>
       </header>
+
+      {/* 新增：菜單覆蓋層 */}
+      <div 
+        className="fixed inset-0 z-[75] pointer-events-none"
+        style={{
+          clipPath: menuOpen ? 'circle(150% at 95% 5%)' : 'circle(0% at 95% 5%)',
+          transition: 'clip-path 0.8s cubic-bezier(0.77, 0, 0.175, 1)',
+        }}
+      >
+        <div 
+          className={`absolute inset-0 bg-[#b3b1a6] backdrop-blur-md ${menuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+          style={{
+            opacity: menuOpen ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out',
+          }}
+        >
+          {/* 關閉按鈕 */}
+          <button 
+            className="absolute top-8 left-8 text-black/70 flex items-center text-sm font-light"
+            onClick={() => setMenuOpen(false)}
+          >
+            <span className="mr-2">close menu</span>
+            <div className="w-4 h-px bg-black/70"></div>
+          </button>
+          
+          {/* 中央 logo */}
+          <div className="absolute top-16 left-1/2 transform -translate-x-1/2">
+            <div className="text-black/80 text-sm">
+              REFLET<br/>
+              COMMUNICATION
+            </div>
+          </div>
+          
+          <div className="flex flex-col justify-center items-center h-full">
+            <div className="max-w-md w-full mx-auto px-8">
+              <ul className="space-y-6">
+                {sectionTitles.map((title, index) => (
+                  <li 
+                    key={index}
+                    className={`transform transition-all duration-500 ${menuOpen ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`}
+                    style={{ transitionDelay: `${index * 0.1}s` }}
+                  >
+                    <button
+                      className={`text-3xl font-light tracking-wide hover:text-black transition-colors ${currentPage === index ? 'text-black' : 'text-black/50'}`}
+                      onClick={() => selectPageFromMenu(index)}
+                    >
+                      {title}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          
+          {/* 底部連結 */}
+          <div className="absolute bottom-8 left-0 right-0 flex justify-center space-x-8 text-xs text-black/70">
+            <a href="#" className="hover:text-black transition-colors">About us</a>
+            <a href="#" className="hover:text-black transition-colors">Get in touch</a>
+            <a href="#" className="hover:text-black transition-colors">Legal notice</a>
+            <span>/</span>
+            <a href="#" className="hover:text-black transition-colors">en</a>
+          </div>
+          
+          {/* 底部標誌 */}
+          <div className="absolute bottom-8 right-8 flex items-center space-x-4">
+            <div className="w-8 h-8 opacity-70">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" stroke="black" strokeWidth="1.5"/>
+                <path d="M7 7L17 17M17 7L7 17" stroke="black" strokeWidth="1.5"/>
+              </svg>
+            </div>
+            <div className="w-8 h-8 opacity-70">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="black" strokeWidth="1.5"/>
+                <path d="M8 12H16M12 8V16" stroke="black" strokeWidth="1.5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Background music player */}
       <div className="hidden">
