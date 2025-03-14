@@ -19,7 +19,7 @@ export default function ImmersiveExperience() {
     "9OquUp6x5IU", // Reflect - Dario Idoate Film
   ]
 
-  const sectionTitles = ["experience", "discover", "connect", "observe", "reflect"]
+  const sectionTitles = ["Philosophy", "Value", "Roots", "Vision", "News"]
   const sectionDescriptions = [
     "Immerse yourself in new perspectives",
     "Explore the journey through immersive landscapes",
@@ -230,7 +230,7 @@ export default function ImmersiveExperience() {
       >
         <div className="w-[90%] h-[90%] ml-0 bg-white relative overflow-auto rounded-r-lg shadow-2xl mt-[10%]">
           <div className="p-16">
-            <h1 className="text-6xl font-bold text-black mb-12">Experience</h1>
+            <h1 className="text-6xl font-bold text-black mb-12">{sectionTitles[currentPage]}</h1>
             
             <div className="flex flex-wrap">
               {/* 左側內容區域 - A 區塊 */}
