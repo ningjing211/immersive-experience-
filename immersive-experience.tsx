@@ -163,6 +163,11 @@ export default function ImmersiveExperience() {
 
   return (
     <div className="relative bg-black text-white">
+      {/* 添加 Google Fonts */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Alice&family=Chocolate+Classical+Sans&family=IM+Fell+Double+Pica:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+      `}</style>
+
       <header className="fixed top-0 left-0 w-full px-8 py-7 flex justify-between items-center z-50 backdrop-blur-sm">
         <div className="flex items-center">
           <div className="relative w-7 h-7 mr-2.5">
@@ -202,67 +207,92 @@ export default function ImmersiveExperience() {
             transition: 'opacity 0.5s ease-in-out',
           }}
         >
-          {/* 關閉按鈕 */}
+          {/* 關閉按鈕 - 移到右邊 */}
           <button 
-            className="absolute top-8 left-8 text-black/70 flex items-center text-sm font-light"
+            className="absolute top-8 right-8 text-black/70 flex items-center text-sm font-light"
+            style={{ fontFamily: "'Libre Baskerville', serif" }}
             onClick={() => setMenuOpen(false)}
           >
             <span className="mr-2">close menu</span>
             <div className="w-4 h-px bg-black/70"></div>
           </button>
           
-          {/* 中央 logo */}
-          <div className="absolute top-16 left-1/2 transform -translate-x-1/2">
-            <div className="text-black/80 text-sm">
-              REFLET<br/>
-              COMMUNICATION
-            </div>
-          </div>
-          
+          {/* 中央內容區域 */}
           <div className="flex flex-col justify-center items-center h-full">
-            <div className="max-w-md w-full mx-auto px-8">
-              <ul className="space-y-6">
-                {sectionTitles.map((title, index) => (
-                  <li 
-                    key={index}
-                    className={`transform transition-all duration-500 ${menuOpen ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`}
-                    style={{ transitionDelay: `${index * 0.1}s` }}
+            <div className="max-w-md w-full mx-auto px-8 -translate-x-24 mt-16">
+              <ul className="space-y-5">
+                <li className="transform transition-all duration-500 translate-x-0 opacity-100" style={{ transitionDelay: '0s' }}>
+                  <button 
+                    className="text-2xl font-light tracking-wider hover:text-black transition-colors text-black"
+                    style={{ fontFamily: "'Alice', serif" }}
+                    onClick={() => selectPageFromMenu(0)}
                   >
-                    <button
-                      className={`text-3xl font-light tracking-wide hover:text-black transition-colors ${currentPage === index ? 'text-black' : 'text-black/50'}`}
-                      onClick={() => selectPageFromMenu(index)}
-                    >
-                      {title}
-                    </button>
-                  </li>
-                ))}
+                    Philosophy
+                  </button>
+                </li>
+                <li className="transform transition-all duration-500 translate-x-0 opacity-100" style={{ transitionDelay: '0.1s' }}>
+                  <button 
+                    className="text-2xl font-light tracking-wider hover:text-black transition-colors text-black/50"
+                    style={{ fontFamily: "'Alice', serif" }}
+                    onClick={() => selectPageFromMenu(1)}
+                  >
+                    Value
+                  </button>
+                </li>
+                <li className="transform transition-all duration-500 translate-x-0 opacity-100" style={{ transitionDelay: '0.2s' }}>
+                  <button 
+                    className="text-2xl font-light tracking-wider hover:text-black transition-colors text-black/50"
+                    style={{ fontFamily: "'Alice', serif" }}
+                    onClick={() => selectPageFromMenu(2)}
+                  >
+                    Roots
+                  </button>
+                </li>
+                <li className="transform transition-all duration-500 translate-x-0 opacity-100" style={{ transitionDelay: '0.3s' }}>
+                  <button 
+                    className="text-2xl font-light tracking-wider hover:text-black transition-colors text-black/50"
+                    style={{ fontFamily: "'Alice', serif" }}
+                    onClick={() => selectPageFromMenu(3)}
+                  >
+                    Vision
+                  </button>
+                </li>
+                <li className="transform transition-all duration-500 translate-x-0 opacity-100" style={{ transitionDelay: '0.4s' }}>
+                  <button 
+                    className="text-2xl font-light tracking-wider hover:text-black transition-colors text-black/50"
+                    style={{ fontFamily: "'Alice', serif" }}
+                    onClick={() => selectPageFromMenu(4)}
+                  >
+                    News
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
           
           {/* 底部連結 */}
           <div className="absolute bottom-8 left-0 right-0 flex justify-center space-x-8 text-xs text-black/70">
-            <a href="#" className="hover:text-black transition-colors">About us</a>
-            <a href="#" className="hover:text-black transition-colors">Get in touch</a>
-            <a href="#" className="hover:text-black transition-colors">Legal notice</a>
-            <span>/</span>
-            <a href="#" className="hover:text-black transition-colors">en</a>
-          </div>
-          
-          {/* 底部標誌 */}
-          <div className="absolute bottom-8 right-8 flex items-center space-x-4">
-            <div className="w-8 h-8 opacity-70">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="20" height="20" stroke="black" strokeWidth="1.5"/>
-                <path d="M7 7L17 17M17 7L7 17" stroke="black" strokeWidth="1.5"/>
-              </svg>
-            </div>
-            <div className="w-8 h-8 opacity-70">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" stroke="black" strokeWidth="1.5"/>
-                <path d="M8 12H16M12 8V16" stroke="black" strokeWidth="1.5"/>
-              </svg>
-            </div>
+            <a 
+              href="#" 
+              className="hover:text-black transition-colors"
+              style={{ fontFamily: "'Libre Baskerville', serif" }}
+            >
+              About us
+            </a>
+            <a 
+              href="#" 
+              className="hover:text-black transition-colors"
+              style={{ fontFamily: "'Libre Baskerville', serif" }}
+            >
+              Get in touch
+            </a>
+            <a 
+              href="#" 
+              className="hover:text-black transition-colors"
+              style={{ fontFamily: "'Libre Baskerville', serif" }}
+            >
+              Legal notice
+            </a>
           </div>
         </div>
       </div>
