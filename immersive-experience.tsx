@@ -21,12 +21,56 @@ export default function ImmersiveExperience() {
 
   const sectionTitles = ["Philosophy", "Value", "Roots", "Vision", "News"]
   const sectionDescriptions = [
-    "Immerse yourself in new perspectives",
-    "Explore the journey through immersive landscapes",
-    "Find your place in nature's grand design",
-    "See the world through different perspectives",
-    "Take time to contemplate the journey",
+    "Explore our guiding principles and approach",
+    "Discover what drives our creative process",
+    "Learn about our heritage and foundation",
+    "See our perspective on the future of brands",
+    "Stay updated with our latest insights and trends",
   ]
+
+  // 為每個頁面定義對應的內容
+  const pageContents = [
+    // Philosophy 頁面內容
+    {
+      title: "Philosophy",
+      subtitle: "Philosophy that serves brands",
+      keywords: ["strategy", "reliability", "expertise", "durability"],
+      services: ["brand positioning", "360° strategy / ecosystem", "PRM & CRM"],
+      description: "我們相信品牌的潛力和在不同媒體上存在的力量。我們的信念在於掌握和理解品牌、其價值觀和抱負，以便能夠支持其整體傳播。這種意識使我們能夠保持品牌的本質和形象，從而提供一個智能策略，並回應一個不斷發展的需求高的受眾。"
+    },
+    // Value 頁面內容
+    {
+      title: "Value",
+      subtitle: "Values that define our approach",
+      keywords: ["integrity", "innovation", "precision", "collaboration"],
+      services: ["brand strategy", "market positioning", "identity design"],
+      description: "我們的價值觀引導我們的每一個決策和行動。我們致力於以誠信、創新和精確的方式為客戶提供服務，同時注重團隊協作，確保每個項目都能達到最高標準。我們相信，只有通過堅持這些核心價值，才能為客戶創造真正有意義的品牌體驗。"
+    },
+    // Roots 頁面內容
+    {
+      title: "Roots",
+      subtitle: "Our foundation and heritage",
+      keywords: ["tradition", "experience", "knowledge", "adaptation"],
+      services: ["brand heritage", "storytelling", "cultural integration"],
+      description: "我們的根源深植於豐富的行業經驗和專業知識。多年來，我們不斷學習、適應和發展，同時保持對傳統價值的尊重。這種平衡使我們能夠創造既尊重品牌歷史又面向未來的解決方案，幫助客戶在不斷變化的市場中保持相關性和競爭力。"
+    },
+    // Vision 頁面內容
+    {
+      title: "Vision",
+      subtitle: "Looking towards the future",
+      keywords: ["foresight", "innovation", "growth", "sustainability"],
+      services: ["trend analysis", "future planning", "sustainable strategies"],
+      description: "我們的願景是成為品牌發展的先驅，不僅關注當下，更著眼於未來。我們致力於識別新興趨勢，預測市場變化，並開發創新解決方案，幫助品牌實現可持續增長。我們相信，真正成功的品牌不僅能適應變化，還能引領變革。"
+    },
+    // News 頁面內容
+    {
+      title: "News",
+      subtitle: "Latest updates and insights",
+      keywords: ["current", "relevant", "informative", "engaging"],
+      services: ["market updates", "trend reports", "case studies"],
+      description: "保持最新資訊對於品牌成功至關重要。我們持續關注行業動態，分析市場趨勢，並分享有價值的見解，幫助客戶做出明智決策。我們的新聞和分析不僅提供信息，還提供實用的策略建議，使品牌能夠在競爭激烈的環境中脫穎而出。"
+    }
+  ];
 
   useEffect(() => {
     // 修改：使用新的滚动处理逻辑
@@ -115,7 +159,7 @@ export default function ImmersiveExperience() {
             <div className="absolute left-0 top-0 h-full w-0.5 bg-white"></div>
             <div className="absolute top-1/2 left-1/2 w-1.5 h-1.5 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
           </div>
-          <span className="text-sm font-medium">Take 2</span>
+          <span className="text-sm font-medium">One One </span>
         </div>
 
         <div className="flex items-center cursor-pointer">
@@ -177,13 +221,11 @@ export default function ImmersiveExperience() {
                   {sectionTitles[index]}
                 </h1>
 
-                {index > 0 && (
-                  <p
-                    className={`text-xl max-w-[600px] text-center font-light tracking-wider shadow-sm transition-all duration-800 delay-200 ${currentPage === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-                  >
-                    {sectionDescriptions[index]}
-                  </p>
-                )}
+                <p
+                  className={`text-xl max-w-[600px] text-center font-light tracking-wider shadow-sm transition-all duration-800 delay-200 ${currentPage === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+                >
+                  {sectionDescriptions[index]}
+                </p>
               </div>
             </section>
           ))}
@@ -230,33 +272,40 @@ export default function ImmersiveExperience() {
       >
         <div className="w-[90%] h-[90%] ml-0 bg-white relative overflow-auto rounded-r-lg shadow-2xl mt-[10%]">
           <div className="p-16">
-            <h1 className="text-6xl font-bold text-black mb-12">{sectionTitles[currentPage]}</h1>
+            <h1 className="text-6xl font-bold text-black mb-12">{pageContents[currentPage].title}</h1>
             
             <div className="flex flex-wrap">
               {/* 左側內容區域 - A 區塊 */}
               <div className="w-full md:w-2/5 mb-8 md:mb-0 pr-0 md:pr-8">
                 <div className="text-black text-3xl font-bold mb-8">
-                  <p>strategy<br/>
-                  reliability<br/>
-                  expertise<br/>
-                  durability</p>
+                  <p>
+                    {pageContents[currentPage].keywords.map((keyword, i) => (
+                      <span key={i}>
+                        {keyword}<br/>
+                      </span>
+                    ))}
+                  </p>
                 </div>
                 
                 <div className="text-black text-lg">
                   <p className="font-medium mb-4">OUR SERVICES</p>
-                  <p>brand positioning<br/>
-                  360° strategy / ecosystem<br/>
-                  PRM & CRM</p>
+                  <p>
+                    {pageContents[currentPage].services.map((service, i) => (
+                      <span key={i}>
+                        {service}<br/>
+                      </span>
+                    ))}
+                  </p>
                 </div>
               </div>
               
               {/* 右側內容區域 - B 區塊 */}
               <div className="w-full md:w-3/5">
                 <div className="mb-8">
-                  <p className="text-black text-2xl font-medium mb-6">Experience that serves brands</p>
+                  <p className="text-black text-2xl font-medium mb-6">{pageContents[currentPage].subtitle}</p>
                   
                   <p className="text-black text-base leading-relaxed" style={{ width: 'calc(4/5 * 100%)' }}>
-                    我們相信品牌的潛力和在不同媒體上存在的力量。我們的信念在於掌握和理解品牌、其價值觀和抱負，以便能夠支持其整體傳播。這種意識使我們能夠保持品牌的本質和形象，從而提供一個智能策略，並回應一個不斷發展的需求高的受眾。
+                    {pageContents[currentPage].description}
                   </p>
                 </div>
               </div>
