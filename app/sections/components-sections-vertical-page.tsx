@@ -125,7 +125,7 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
         if (contentRef.current) {
           contentRef.current.scrollTop = 0;
         }
-      }, 400); // 淡出動畫持續時間增加
+      }, 450); // 淡出動畫持續時間調整
     };
 
     // 處理滾動事件
@@ -166,11 +166,12 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
             onScroll={handleScroll}
           >
             <div 
-              className="space-y-12 transition-all duration-500 ease-in-out"
+              className="space-y-12 transition-all duration-500 ease-out"
               style={{ 
                 opacity: isTransitioning ? 0 : 1,
-                transform: isTransitioning ? 'translateX(20px)' : 'translateX(0)',
-                filter: `blur(${isTransitioning ? '3px' : '0'})`
+                transform: isTransitioning ? 'scale(0.97)' : 'scale(1)',
+                filter: `blur(${isTransitioning ? '3px' : '0'})`,
+                transformOrigin: 'center'
               }}
             >
               <div className="max-w-4xl">
