@@ -1,18 +1,22 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import Header from "../components/layout/Header"
-import Menu from "../components/layout/Menu"
-import Navigation from "../components/layout/Navigation"
-import ScrollPrompt from "../components/layout/ScrollPrompt"
-import SoundToggle from "../components/layout/SoundToggle"
-import VideoSection from "../components/sections/VideoSection"
-import VerticalPage from "../components/sections/VerticalPage"
-import YouTubePlayer from "../components/common/YouTubePlayer"
-import { usePageNavigation } from "../hooks/usePageNavigation"
-import { useSound } from "../hooks/useSound"
-import GlobalStyles from "../styles/globalStyles"
-import { videoIds, sectionTitles, sectionDescriptions } from "../data/sectionData"
+
+import Header from "../app/layout/components-layout-header"
+import Menu from "../app/layout/components-layout-menu"
+import Navigation from "../app/layout/components-layout-navigation"
+import ScrollPrompt from "../app/layout/components-layout-scroll-prompt"
+import SoundToggle from "../app/layout/components-layout-sound-toggle"
+
+import VideoSection from "../app/sections/components-sections-video-section"
+import VerticalPage from "../app/sections/components-sections-vertical-page"
+import YouTubePlayer from "../app/common/components-common-youtube-player"
+import { usePageNavigation } from "../hooks/hooks-use-page-navigation"
+
+import { useSound } from "../hooks/hooks-use-sound"
+import GlobalStyles from "../styles/styles-global-styles"
+
+import { videoIds, sectionTitles, sectionDescriptions } from "../data/data-section-data"
 
 export default function ImmersiveExperience() {
   // State hooks
