@@ -216,7 +216,9 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
         pointerEvents: showVerticalPage ? 'auto' : 'none'
       }}
     >
-      <div className="w-[90%] h-[90%] ml-0 bg-white relative rounded-r-lg shadow-2xl mt-[10%] flex flex-col">
+      <div 
+        className={`${currentPage === 4 ? 'w-full h-full mt-0' : 'w-[90%] h-[90%] mt-[10%]'} ml-0 bg-white relative rounded-r-lg shadow-2xl flex flex-col`}
+      >
         <div className="p-16 flex-grow flex flex-col overflow-hidden">
           <h1 className="text-6xl font-bold text-black mb-8 flex-shrink-0">{pageContents[currentPage].title}</h1>
           
