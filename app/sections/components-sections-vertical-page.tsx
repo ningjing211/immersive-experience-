@@ -1,5 +1,5 @@
 // components/sections/VerticalPage.tsx
-import React, { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 // import StandardContent from "../content/StandardContent"
 // import NewsContent from "../content/NewsContent"
 import { pageContents } from "../../data/data-section-data"
@@ -58,6 +58,7 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
   // 創建一個簡單的新聞內容組件
   const NewsContent = () => {
     const [selectedArticle, setSelectedArticle] = useState(0);
+    const contentRef = useRef<HTMLDivElement>(null);
     
     const articles = [
       {
@@ -102,10 +103,17 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
       }
     ];
 
+    // 當選擇新文章時滾動到頂部
+    useEffect(() => {
+      if (contentRef.current) {
+        contentRef.current.scrollTop = 0;
+      }
+    }, [selectedArticle]);
+
     return (
-      <div className="space-y-8">
-        {/* Breadcrumbs 導航 */}
-        <div className="flex flex-wrap gap-6 mb-8 border-b pb-4">
+      <div className="flex flex-col h-full">
+        {/* 固定在頂部的 Breadcrumbs 導航 */}
+        <div className="flex flex-wrap gap-6 mb-8 border-b pb-4 bg-white sticky top-0 z-10">
           {articles.map((article, index) => (
             <button
               key={index}
@@ -119,25 +127,49 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
           ))}
         </div>
 
-        {/* 文章內容 */}
-        <div className="space-y-12">
-          <div className="max-w-4xl">
-            <h3 className="text-3xl font-semibold mb-6 text-black">
-              {articles[selectedArticle].title}
-            </h3>
-            <div className="space-y-8">
-              {articles[selectedArticle].content.map((paragraph, idx) => (
-                <React.Fragment key={`content-${idx}`}>
-                  <p className="text-lg text-[#333]">{paragraph}</p>
-                  {articles[selectedArticle].images[idx] && (
-                    <img 
-                      src={articles[selectedArticle].images[idx]} 
-                      alt={`Article image ${idx+1}`} 
-                      className="w-full h-64 object-cover rounded-lg"
-                    />
-                  )}
-                </React.Fragment>
-              ))}
+        {/* 可滾動的文章內容區域 */}
+        <div 
+          ref={contentRef}
+          className="overflow-y-auto flex-grow pr-4"
+          style={{ maxHeight: 'calc(100vh - 250px)' }}
+        >
+          <div className="space-y-12">
+            <div className="max-w-4xl">
+              <h3 className="text-3xl font-semibold mb-6 text-black">
+                {articles[selectedArticle].title}
+              </h3>
+              <div className="space-y-8">
+                {articles[selectedArticle].content.map((paragraph, idx) => (
+                  <React.Fragment key={`content-${idx}`}>
+                    <p className="text-lg text-[#333]">{paragraph}</p>
+                    {articles[selectedArticle].images[idx] && (
+                      <img 
+                        src={articles[selectedArticle].images[idx]} 
+                        alt={`Article image ${idx+1}`} 
+                        className="w-full h-64 object-cover rounded-lg"
+                      />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+              
+              {/* 添加更多內容以確保有足夠的內容可滾動 */}
+              <div className="mt-16">
+                <h4 className="text-2xl font-semibold mb-4 text-[#555]">更多相關內容</h4>
+                <div className="space-y-6">
+                  <p className="text-lg text-[#333]">
+                    數位轉型已成為企業不可避免的趨勢。在這個快速變化的時代，品牌必須不斷適應新技術和消費者行為的變化。我們的專家團隊密切關注這些變化，提供前瞻性的見解和建議，幫助品牌在數位時代保持競爭力。
+                  </p>
+                  <p className="text-lg text-[#333]">
+                    社交媒體平台的演算法不斷變化，影響著品牌的曝光度和用戶參與度。了解這些變化並相應調整策略至關重要。我們的團隊提供最新的社交媒體趨勢分析和最佳實踐建議，幫助品牌在各平台上取得最大的影響力。
+                  </p>
+                  <img 
+                    src="https://images.unsplash.com/photo-1614624532983-4ce03382d63d?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                    alt="Additional content image" 
+                    className="w-full h-64 object-cover rounded-lg"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -154,12 +186,14 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
         opacity: showVerticalPage ? 1 : 0,
       }}
     >
-      <div className="w-[90%] h-[90%] ml-0 bg-white relative overflow-auto rounded-r-lg shadow-2xl mt-[10%]">
-        <div className="p-16">
-          <h1 className="text-6xl font-bold text-black mb-12">{pageContents[currentPage].title}</h1>
+      <div className="w-[90%] h-[90%] ml-0 bg-white relative overflow-hidden rounded-r-lg shadow-2xl mt-[10%]">
+        <div className="p-16 h-full overflow-hidden flex flex-col">
+          <h1 className="text-6xl font-bold text-black mb-8">{pageContents[currentPage].title}</h1>
           
           {/* 根據當前頁面顯示不同內容 */}
-          {currentPage === 4 ? <NewsContent /> : <StandardContent />}
+          <div className="flex-grow overflow-hidden">
+            {currentPage === 4 ? <NewsContent /> : <StandardContent />}
+          </div>
         </div>
         
         {/* 關閉按鈕 */}
