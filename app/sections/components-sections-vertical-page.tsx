@@ -169,7 +169,7 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
               className="space-y-12 transition-all duration-500 ease-in-out"
               style={{ 
                 opacity: isTransitioning ? 0 : 1,
-                transform: isTransitioning ? 'translateY(10px)' : 'translateY(0)',
+                transform: isTransitioning ? 'translateX(20px)' : 'translateX(0)',
                 filter: `blur(${isTransitioning ? '3px' : '0'})`
               }}
             >
