@@ -10,6 +10,9 @@ export default function ImmersiveExperience() {
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRefs = useRef<Array<HTMLIFrameElement | null>>([])
   const audioRef = useRef<HTMLIFrameElement | null>(null)
+  const [selectedArticle, setSelectedArticle] = useState(0);
+  const articleRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const topRef = useRef<HTMLDivElement | null>(null);
 
   // YouTube 视频 ID
   const videoIds = [
@@ -160,6 +163,21 @@ export default function ImmersiveExperience() {
     updateActivePage(index);
     setMenuOpen(false); // 選擇後關閉菜單
   }
+
+  const scrollToTop = () => {
+    topRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const selectArticle = (index: number) => {
+    setSelectedArticle(index);
+  };
+
+  // 修復 ref 回調函數
+  const setArticleRef = (el: HTMLDivElement | null, index: number) => {
+    if (articleRefs.current) {
+      articleRefs.current[index] = el;
+    }
+  };
 
   return (
     <div className="relative bg-black text-white">
@@ -323,7 +341,11 @@ export default function ImmersiveExperience() {
               {/* YouTube iframe as background video */}
               <div className="absolute inset-0 w-full h-full pointer-events-none">
                 <iframe
-                  ref={(el) => (videoRefs.current[index] = el)}
+                  ref={(el) => {
+                    if (videoRefs.current) {
+                      videoRefs.current[index] = el;
+                    }
+                  }}
                   src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${videoId}&enablejsapi=1&version=3&playerapiid=ytplayer&disablekb=1&fs=0&modestbranding=1`}
                   className="absolute w-[300%] h-[300%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                   frameBorder="0"
@@ -386,7 +408,7 @@ export default function ImmersiveExperience() {
         </div>
       </div>
 
-      {/* 新增：垂直滾動頁面 */}
+      {/* 垂直滾動頁面 */}
       <div 
         className="fixed inset-0 z-[60] flex items-start justify-start"
         style={{
@@ -396,45 +418,217 @@ export default function ImmersiveExperience() {
         }}
       >
         <div className="w-[90%] h-[90%] ml-0 bg-white relative overflow-auto rounded-r-lg shadow-2xl mt-[10%]">
-          <div className="p-16">
+          <div className="p-16" ref={topRef}>
             <h1 className="text-6xl font-bold text-black mb-12">{pageContents[currentPage].title}</h1>
             
-            <div className="flex flex-wrap">
-              {/* 左側內容區域 - A 區塊 */}
-              <div className="w-full md:w-2/5 mb-8 md:mb-0 pr-0 md:pr-8">
-                <div className="text-black text-3xl font-bold mb-8">
-                  <p>
-                    {pageContents[currentPage].keywords.map((keyword, i) => (
-                      <span key={i}>
-                        {keyword}<br/>
-                      </span>
-                    ))}
-                  </p>
+            {/* 修改：使用部落格形式顯示新聞內容 */}
+            {currentPage === 4 && ( // 只在 News 頁面顯示
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                {/* 文章選擇器 - 修改為分行顯示 */}
+                <div className="space-y-6">
+                  <div>
+                    <button 
+                      className={`block text-2xl font-light tracking-wider transition-colors ${selectedArticle === 0 ? 'text-black' : 'text-black/50'}`}
+                      style={{ fontFamily: "'Alice', serif" }}
+                      onClick={() => setSelectedArticle(0)}
+                    >
+                      current
+                    </button>
+                  </div>
+                  
+                  <div>
+                    <button 
+                      className={`block text-2xl font-light tracking-wider transition-colors ${selectedArticle === 1 ? 'text-black' : 'text-black/50'}`}
+                      style={{ fontFamily: "'Alice', serif" }}
+                      onClick={() => setSelectedArticle(1)}
+                    >
+                      relevant
+                    </button>
+                  </div>
+                  
+                  <div>
+                    <button 
+                      className={`block text-2xl font-light tracking-wider transition-colors ${selectedArticle === 2 ? 'text-black' : 'text-black/50'}`}
+                      style={{ fontFamily: "'Alice', serif" }}
+                      onClick={() => setSelectedArticle(2)}
+                    >
+                      informative
+                    </button>
+                  </div>
+                  
+                  <div>
+                    <button 
+                      className={`block text-2xl font-light tracking-wider transition-colors ${selectedArticle === 3 ? 'text-black' : 'text-black/50'}`}
+                      style={{ fontFamily: "'Alice', serif" }}
+                      onClick={() => setSelectedArticle(3)}
+                    >
+                      engaging
+                    </button>
+                  </div>
                 </div>
                 
-                <div className="text-black text-lg">
-                  <p className="font-medium mb-4">OUR SERVICES</p>
-                  <p>
-                    {pageContents[currentPage].services.map((service, i) => (
-                      <span key={i}>
-                        {service}<br/>
-                      </span>
-                    ))}
-                  </p>
-                </div>
-              </div>
-              
-              {/* 右側內容區域 - B 區塊 */}
-              <div className="w-full md:w-3/5">
-                <div className="mb-8">
-                  <p className="text-black text-2xl font-medium mb-6">{pageContents[currentPage].subtitle}</p>
+                {/* 文章內容 - 添加滾動功能 */}
+                <div className="md:col-span-3">
+                  {/* 文章1 */}
+                  <div 
+                    className={`${selectedArticle === 0 ? 'block' : 'hidden'} max-h-[70vh] overflow-y-auto pr-4`} 
+                    ref={(el) => setArticleRef(el, 0)}
+                  >
+                    <h3 className="text-3xl font-semibold mb-6 sticky top-0 bg-white pt-2 pb-2 z-10 text-[#555]">
+                      Current - Latest updates and insights
+                    </h3>
+                    <div className="space-y-8">
+                      <p className="text-lg text-[#333]">保持最新資訊對於品牌成功至關重要。我們持續關注行業動態，分析市場趨勢，並分享有價值的見解，幫助客戶做出明智決策。我們的新聞和分析不僅提供信息，還提供實用的策略建議，使品牌能夠在競爭激烈的環境中脫穎而出。</p>
+                      
+                      <img 
+                        src="https://images.unsplash.com/photo-1614730020301-446462b8f138?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                        alt="Current article image" 
+                        className="w-full h-80 object-cover rounded-lg"
+                      />
+                      
+                      <p className="text-lg text-[#333]">在有如太空艙般的冷調空間裡，填滿了襲自酸性設計的迷幻色系——才踏進去，便宛如身置星際異空間，沒錯，這就是此一世代最新穎的體驗，所有意想不到的神奇體驗，都將在此發生。</p>
+                      
+                      <img 
+                        src="https://images.unsplash.com/photo-1614727187331-285522b20eaf?q=80&w=2021&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                        alt="Current article second image" 
+                        className="w-full h-80 object-cover rounded-lg"
+                      />
+                    </div>
+                    
+                    {/* 添加更多內容以測試滾動 */}
+                    <div className="mt-12">
+                      <h4 className="text-2xl font-semibold mb-4 text-[#555]">更多相關內容</h4>
+                      <div className="space-y-8">
+                        <p className="text-lg text-[#333]">數位轉型已成為企業不可避免的趨勢。在這個快速變化的時代，品牌必須不斷適應新技術和消費者行為的變化。我們的專家團隊密切關注這些變化，提供前瞻性的見解和建議，幫助品牌在數位時代保持競爭力。</p>
+                        
+                        <img 
+                          src="https://images.unsplash.com/photo-1614624532983-4ce03382d63d?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                          alt="Additional content image" 
+                          className="w-full h-80 object-cover rounded-lg"
+                        />
+                        
+                        <p className="text-lg text-[#333]">社交媒體平台的演算法不斷變化，影響著品牌的曝光度和用戶參與度。了解這些變化並相應調整策略至關重要。我們的團隊提供最新的社交媒體趨勢分析和最佳實踐建議，幫助品牌在各平台上取得最大的影響力。</p>
+                        
+                        <p className="text-lg text-[#333]">消費者期望品牌提供個性化的體驗。利用數據和人工智能技術，品牌可以更好地了解消費者需求並提供量身定制的內容和服務。我們幫助品牌實施有效的個性化策略，提高客戶滿意度和忠誠度。</p>
+                      </div>
+                    </div>
+                  </div>
                   
-                  <p className="text-black text-base leading-relaxed" style={{ width: 'calc(4/5 * 100%)' }}>
-                    {pageContents[currentPage].description}
-                  </p>
+                  {/* 文章2 */}
+                  <div 
+                    className={`${selectedArticle === 1 ? 'block' : 'hidden'} max-h-[70vh] overflow-y-auto pr-4`} 
+                    ref={(el) => setArticleRef(el, 1)}
+                  >
+                    <h3 className="text-3xl font-semibold mb-6 sticky top-0 bg-white pt-2 pb-2 z-10 text-[#555]">
+                      Relevant - Industry Insights
+                    </h3>
+                    <div className="space-y-8">
+                      <p className="text-lg text-[#333]">匯賦新創實現創新理念的線下實驗室。在這裡，每一杯奶昔的誕生，都承載著匯賦新創的核心技術與經營哲學。從 LINE CRM 系統, AI人工智慧點餐, 到 POS 系統，店內的一切運營細節，無不體現了匯賦新創在數位化與線下場景結合上的長遠期許。</p>
+                      
+                      <img 
+                        src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                        alt="Relevant article image" 
+                        className="w-full h-80 object-cover rounded-lg"
+                      />
+                      
+                      <p className="text-lg text-[#333]">一個充滿溫度的線下空間。無論是參與設計的員工，還是作為股東的創意夥伴，他們共同將匯賦新創的創意注入到這家店裡，為顧客帶來更直觀的品牌體驗。</p>
+                    </div>
+                  </div>
+                  
+                  {/* 文章3 */}
+                  <div 
+                    className={`${selectedArticle === 2 ? 'block' : 'hidden'} max-h-[70vh] overflow-y-auto pr-4`} 
+                    ref={(el) => setArticleRef(el, 2)}
+                  >
+                    <h3 className="text-3xl font-semibold mb-6 sticky top-0 bg-white pt-2 pb-2 z-10 text-[#555]">
+                      Informative - Knowledge Base
+                    </h3>
+                    <div className="space-y-8">
+                      <p className="text-lg text-[#333]">匯賦新創實現創新理念的線下實驗室。在這裡，每一杯奶昔的誕生，都承載著匯賦新創的核心技術與經營哲學。從 LINE CRM 系統, AI人工智慧點餐, 到 POS 系統，店內的一切運營細節，無不體現了匯賦新創在數位化與線下場景結合上的長遠期許。</p>
+                      
+                      <img 
+                        src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                        alt="Informative article image" 
+                        className="w-full h-80 object-cover rounded-lg"
+                      />
+                      
+                      <p className="text-lg text-[#333]">一個充滿溫度的線下空間。無論是參與設計的員工，還是作為股東的創意夥伴，他們共同將匯賦新創的創意注入到這家店裡，為顧客帶來更直觀的品牌體驗。</p>
+                    </div>
+                  </div>
+                  
+                  {/* 文章4 */}
+                  <div 
+                    className={`${selectedArticle === 3 ? 'block' : 'hidden'} max-h-[70vh] overflow-y-auto pr-4`} 
+                    ref={(el) => setArticleRef(el, 3)}
+                  >
+                    <h3 className="text-3xl font-semibold mb-6 sticky top-0 bg-white pt-2 pb-2 z-10 text-[#555]">
+                      Engaging - Stories That Matter
+                    </h3>
+                    <div className="space-y-8">
+                      <p className="text-lg text-[#333]">它的濃郁口感和色彩斑斕的配料，彷彿承載著美國20世紀中期的夢想與繁榮。它誕生於汽車旅館和路邊餐廳盛行的年代，象徵著一種自由流動的生活方式：跨越洲際的高速公路，霓虹燈閃爍下的加油站，以及疲憊旅人片刻的甜蜜享受。</p>
+                      
+                      <img 
+                        src="https://images.unsplash.com/photo-1558158539-226f4a45f7b3?q=80&w=2089&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                        alt="Engaging article image" 
+                        className="w-full h-80 object-cover rounded-lg"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+            
+            {/* 原有內容 - 在非 News 頁面顯示 */}
+            {currentPage !== 4 && (
+              <div className="flex flex-wrap">
+                {/* 左側內容區域 - A 區塊 */}
+                <div className="w-full md:w-2/5 mb-8 md:mb-0 pr-0 md:pr-8">
+                  <div className="text-black text-3xl font-bold mb-8">
+                    <p>
+                      {pageContents[currentPage].keywords.map((keyword, i) => (
+                        <span key={i}>
+                          {keyword}<br/>
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                  
+                  <div className="text-black text-lg">
+                    <p className="font-medium mb-4">OUR SERVICES</p>
+                    <p>
+                      {pageContents[currentPage].services.map((service, i) => (
+                        <span key={i}>
+                          {service}<br/>
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* 右側內容區域 - B 區塊 */}
+                <div className="w-full md:w-3/5">
+                  <div className="mb-8">
+                    <p className="text-black text-2xl font-medium mb-6">{pageContents[currentPage].subtitle}</p>
+                    
+                    <p className="text-black text-base leading-relaxed" style={{ width: 'calc(4/5 * 100%)' }}>
+                      {pageContents[currentPage].description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* 回到頂部按鈕 - 只在 News 頁面顯示 */}
+            {currentPage === 4 && (
+              <div className="flex justify-center mt-16">
+                <button 
+                  onClick={scrollToTop}
+                  className="px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors"
+                >
+                  回到頂部
+                </button>
+              </div>
+            )}
           </div>
           
           {/* 關閉按鈕 */}
