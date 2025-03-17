@@ -1,6 +1,6 @@
 // components/sections/VideoSection.tsx
-import React, { useRef } from "react"
-import YouTubePlayer from "../common/YouTubePlayer"
+import React, { useRef, useEffect } from "react"
+import YouTubePlayer from "../common/components-common-youtube-player"
 
 interface VideoSectionProps {
   videoId: string
@@ -18,6 +18,39 @@ const VideoSection: React.FC<VideoSectionProps> = ({
   index
 }) => {
   const videoRef = useRef<HTMLIFrameElement | null>(null)
+  
+  // 添加效果來控制視頻播放
+  useEffect(() => {
+    if (isActive && videoRef.current && videoRef.current.contentWindow) {
+      try {
+        // 當部分激活時播放視頻
+        videoRef.current.contentWindow.postMessage(
+          JSON.stringify({
+            event: "command",
+            func: "playVideo",
+            args: []
+          }),
+          "*"
+        );
+      } catch (e) {
+        console.error("Failed to play video:", e);
+      }
+    } else if (!isActive && videoRef.current && videoRef.current.contentWindow) {
+      try {
+        // 當部分不活躍時暫停視頻
+        videoRef.current.contentWindow.postMessage(
+          JSON.stringify({
+            event: "command",
+            func: "pauseVideo",
+            args: []
+          }),
+          "*"
+        );
+      } catch (e) {
+        console.error("Failed to pause video:", e);
+      }
+    }
+  }, [isActive]);
 
   return (
     <section
@@ -30,7 +63,14 @@ const VideoSection: React.FC<VideoSectionProps> = ({
           videoId={videoId}
           className="absolute w-[300%] h-[300%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
           title={`Background video ${index + 1}`}
+          autoplay={true}
+          muted={true}
+          controls={false}
+          loop={true}
         />
+        
+        {/* 回退背景，如果視頻無法加載 */}
+        <div className="absolute inset-0 bg-gray-900 z-[-1]"></div>
       </div>
 
       {/* Stylish overlays */}

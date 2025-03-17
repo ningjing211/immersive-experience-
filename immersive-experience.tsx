@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import SoundToggle from './app/layout/components-layout-sound-toggle'
 
 export default function ImmersiveExperience() {
   const [currentPage, setCurrentPage] = useState(0)
@@ -120,25 +121,32 @@ export default function ImmersiveExperience() {
     }
   }
 
-  // 修复的静音切换功能
-  const toggleSound = () => {
-    setSoundOn(!soundOn);
+  // 在組件頂部添加 useEffect 來處理聲音
+  useEffect(() => {
+    // 獲取所有音頻/視頻元素
+    const audioElements = document.querySelectorAll('audio, video, iframe');
     
-    if (audioRef.current && audioRef.current.contentWindow) {
-      try {
-        // 正确的 YouTube iframe API 消息格式
-        audioRef.current.contentWindow.postMessage(
-          JSON.stringify({
-            event: "command",
-            func: soundOn ? "pauseVideo" : "playVideo",
-          }),
-          "*"
-        );
-      } catch (error) {
-        console.error("控制音频时出错:", error);
+    // 根據 soundOn 狀態設置靜音
+    audioElements.forEach(el => {
+      if (el instanceof HTMLVideoElement || el instanceof HTMLAudioElement) {
+        el.muted = !soundOn;
+      } else if (el instanceof HTMLIFrameElement) {
+        // 對於 YouTube iframe，需要使用 postMessage API
+        try {
+          el.contentWindow?.postMessage(
+            JSON.stringify({
+              event: 'command',
+              func: soundOn ? 'unMute' : 'mute',
+              args: []
+            }),
+            '*'
+          );
+        } catch (e) {
+          console.error('Failed to mute iframe:', e);
+        }
       }
-    }
-  }
+    });
+  }, [soundOn]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -176,6 +184,26 @@ export default function ImmersiveExperience() {
   const setArticleRef = (el: HTMLDivElement | null, index: number) => {
     if (articleRefs.current) {
       articleRefs.current[index] = el;
+    }
+  };
+
+  // 修复的静音切换功能
+  const toggleSound = () => {
+    setSoundOn(!soundOn);
+    
+    if (audioRef.current && audioRef.current.contentWindow) {
+      try {
+        // 正确的 YouTube iframe API 消息格式
+        audioRef.current.contentWindow.postMessage(
+          JSON.stringify({
+            event: "command",
+            func: soundOn ? "pauseVideo" : "playVideo",
+          }),
+          "*"
+        );
+      } catch (error) {
+        console.error("控制音频时出错:", error);
+      }
     }
   };
 
@@ -612,9 +640,9 @@ export default function ImmersiveExperience() {
                     
                     <p className="text-black text-base leading-relaxed" style={{ width: 'calc(4/5 * 100%)' }}>
                       {pageContents[currentPage].description}
-                    </p>
-                  </div>
-                </div>
+                </p>
+              </div>
+            </div>
               </div>
             )}
             
@@ -643,14 +671,7 @@ export default function ImmersiveExperience() {
         </div>
       </div>
 
-      {/* 靜音按鈕 */}
-      <button
-        className="fixed bottom-8 right-8 z-[70] text-xs font-light tracking-wider lowercase opacity-80 cursor-pointer hover:opacity-100 transition-opacity duration-300 py-2 px-4 border border-white/30 rounded-full backdrop-blur-sm"
-        onClick={toggleSound}
-        aria-label={soundOn ? "mute" : "sound"}
-      >
-        {soundOn ? "mute" : "sound"}
-      </button>
+      <SoundToggle soundOn={soundOn} toggleSound={toggleSound} />
 
       <style jsx>{`
         @keyframes scrollAnim {

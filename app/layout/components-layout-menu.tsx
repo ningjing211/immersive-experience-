@@ -1,6 +1,6 @@
 // components/layout/Menu.tsx
 import React from "react"
-import { sectionTitles } from "../../data/sectionData"
+import { sectionTitles } from "../../data/data-section-data"
 
 interface MenuProps {
   menuOpen: boolean

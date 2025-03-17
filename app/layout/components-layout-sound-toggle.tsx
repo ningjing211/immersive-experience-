@@ -13,3 +13,9 @@ const SoundToggle: React.FC<SoundToggleProps> = ({ soundOn, toggleSound }) => {
       onClick={toggleSound}
       aria-label={soundOn ? "mute" : "sound"}
     >
+      {soundOn ? "mute" : "sound"}
+    </button>
+  );
+};
+
+export default SoundToggle;
