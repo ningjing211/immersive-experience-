@@ -15,6 +15,12 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
   setShowVerticalPage,
   currentPage
 }) => {
+  // 添加主要分類狀態
+  const [activeCategory, setActiveCategory] = useState("Science");
+  
+  // 定義主要分類
+  const categories = ["Science", "Digital", "Design", "AI Tools"];
+
   // 創建一個簡單的內容組件來替代缺失的組件
   const StandardContent = () => (
     <div className="flex flex-wrap">
@@ -134,86 +140,117 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
     };
 
     return (
-      <div className="flex h-full">
-        {/* 左側 Breadcrumbs 導航 */}
-        <div className="w-1/5 pr-8 pt-4">
-          <div className="flex flex-col space-y-6">
-            {articles.map((article, index) => (
-              <button
-                key={index}
-                className={`text-left text-xl font-medium transition-colors ${
-                  selectedArticle === index ? 'text-black' : 'text-gray-400'
-                }`}
-                style={{ fontFamily: "'Alice', serif" }}
-                onClick={() => handleArticleChange(index)}
-              >
-                {article.title.split(' - ')[0].charAt(0).toUpperCase() + article.title.split(' - ')[0].slice(1).toLowerCase()}
-              </button>
-            ))}
+      <div className="outer-wrap flex h-full">
+        {/* 左側區域 */}
+        <div className="left-section w-1/5">
+          {/* 左側 Breadcrumbs 導航 - 更改類名為 main-breadcrumb */}
+          <div className="main-breadcrumb pr-8 pt-0">
+            <div className="flex flex-col space-y-6 mt-6">
+              {articles.map((article, index) => (
+                <button
+                  key={index}
+                  className={`text-left text-xl font-medium transition-colors ${
+                    selectedArticle === index ? 'text-black' : 'text-gray-400'
+                  }`}
+                  style={{ fontFamily: "'Alice', serif" }}
+                  onClick={() => handleArticleChange(index)}
+                >
+                  {article.title.split(' - ')[0].charAt(0).toUpperCase() + article.title.split(' - ')[0].slice(1).toLowerCase()}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* 右側文章內容區域 */}
-        <div className="w-4/5">
-          <div 
-            ref={contentRef}
-            className="overflow-y-auto pr-4"
-            style={{ 
-              height: 'calc(100vh - 200px)',
-              overflowY: 'auto',
-              WebkitOverflowScrolling: 'touch'
-            }}
-            onScroll={handleScroll}
-          >
+        {/* 右側區域 */}
+        <div className="right-section w-4/5 flex flex-col">
+          {/* 主要分類 Breadcrumbs - 更改類名為 sub-breadcrumb 並移除背景顏色 */}
+          <div className="sub-breadcrumb p-6 mb-8 border-b border-gray-200">
+            <div className="flex space-x-12">
+              {categories.map((category, index) => (
+                <button
+                  key={category}
+                  className={`text-xl font-medium transition-all relative ${
+                    activeCategory === category 
+                      ? 'text-black' 
+                      : 'text-gray-400 hover:text-gray-600'
+                  }`}
+                  onClick={() => setActiveCategory(category)}
+                >
+                  {category}
+                  {activeCategory === category && (
+                    <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-black transition-all"></span>
+                  )}
+                  {index === 0 && activeCategory !== category && (
+                    <span className="absolute top-0 -right-6 text-gray-300 text-sm">•</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 右側文章內容區域 */}
+          <div className="article-section flex-grow">
             <div 
-              className="space-y-12 transition-all duration-500 ease-out"
+              ref={contentRef}
+              className="overflow-y-auto pr-4"
               style={{ 
-                opacity: isTransitioning ? 0 : 1,
-                transform: isTransitioning ? 'scale(0.97)' : 'scale(1)',
-                filter: `blur(${isTransitioning ? '3px' : '0'})`,
-                transformOrigin: 'center'
+                height: 'calc(100vh - 280px)', // 調整高度以適應新的佈局
+                overflowY: 'auto',
+                WebkitOverflowScrolling: 'touch'
               }}
+              onScroll={handleScroll}
             >
-              <div className="max-w-4xl">
-                <h3 className="text-3xl font-semibold mb-6 text-black">
-                  {articles[displayedArticle].title}
-                </h3>
-                <div className="space-y-8">
-                  {articles[displayedArticle].content.map((paragraph, idx) => (
-                    <React.Fragment key={`content-${idx}`}>
-                      <p className="text-lg text-[#333]">{paragraph}</p>
-                      {articles[displayedArticle].images[idx] && (
-                        <img 
-                          src={articles[displayedArticle].images[idx]} 
-                          alt={`Article image ${idx+1}`} 
-                          className="w-full h-auto aspect-video object-cover rounded-lg"
-                        />
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-                
-                {/* 添加更多內容以確保有足夠的內容可滾動 */}
-                <div className="mt-16 pb-32">
-                  <h4 className="text-2xl font-semibold mb-4 text-[#555]">更多相關內容</h4>
-                  <div className="space-y-6">
-                    {[1, 2, 3].map((i) => (
-                      <React.Fragment key={i}>
-                        <p className="text-lg text-[#333]">
-                          數位轉型已成為企業不可避免的趨勢。在這個快速變化的時代，品牌必須不斷適應新技術和消費者行為的變化。我們的專家團隊密切關注這些變化，提供前瞻性的見解和建議，幫助品牌在數位時代保持競爭力。
-                        </p>
-                        <p className="text-lg text-[#333]">
-                          社交媒體平台的演算法不斷變化，影響著品牌的曝光度和用戶參與度。了解這些變化並相應調整策略至關重要。我們的團隊提供最新的社交媒體趨勢分析和最佳實踐建議，幫助品牌在各平台上取得最大的影響力。
-                        </p>
-                        <img 
-                          src={i === 1 ? "https://images.unsplash.com/photo-1592035659284-3b39971c1107?q=80&w=2063&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" : 
-                               i === 2 ? "https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" : 
-                               "https://images.unsplash.com/photo-1522124624696-7ea32eb9592c?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} 
-                          alt={`Additional content image ${i}`} 
-                          className="w-full h-auto aspect-video object-cover rounded-lg"
-                        />
+              <div 
+                className="space-y-12 transition-all duration-500 ease-out"
+                style={{ 
+                  opacity: isTransitioning ? 0 : 1,
+                  transform: isTransitioning ? 'scale(0.97)' : 'scale(1)',
+                  filter: `blur(${isTransitioning ? '3px' : '0'})`,
+                  transformOrigin: 'center'
+                }}
+              >
+                <div className="max-w-4xl">
+                  <h3 className="text-3xl font-semibold mb-6 text-black">
+                    {articles[displayedArticle].title}
+                  </h3>
+                  <div className="space-y-8">
+                    {articles[displayedArticle].content.map((paragraph, idx) => (
+                      <React.Fragment key={`content-${idx}`}>
+                        <p className="text-lg text-[#333]">{paragraph}</p>
+                        {articles[displayedArticle].images[idx] && (
+                          <img 
+                            src={articles[displayedArticle].images[idx]} 
+                            alt={`Article image ${idx+1}`} 
+                            className="w-full h-auto aspect-video object-cover rounded-lg"
+                          />
+                        )}
                       </React.Fragment>
                     ))}
+                  </div>
+                  
+                  {/* 添加更多內容以確保有足夠的內容可滾動 */}
+                  <div className="mt-16 pb-32">
+                    <h4 className="text-2xl font-semibold mb-4 text-[#555]">更多相關內容</h4>
+                    <div className="space-y-6">
+                      {[1, 2, 3].map((i) => (
+                        <React.Fragment key={i}>
+                          <p className="text-lg text-[#333]">
+                            數位轉型已成為企業不可避免的趨勢。在這個快速變化的時代，品牌必須不斷適應新技術和消費者行為的變化。我們的專家團隊密切關注這些變化，提供前瞻性的見解和建議，幫助品牌在數位時代保持競爭力。
+                          </p>
+                          <p className="text-lg text-[#333]">
+                            社交媒體平台的演算法不斷變化，影響著品牌的曝光度和用戶參與度。了解這些變化並相應調整策略至關重要。我們的團隊提供最新的社交媒體趨勢分析和最佳實踐建議，幫助品牌在各平台上取得最大的影響力。
+                          </p>
+                          <img 
+                            src={i === 1 ? "https://images.unsplash.com/photo-1592035659284-3b39971c1107?q=80&w=2063&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" : 
+                                 i === 2 ? "https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" : 
+                                 "https://images.unsplash.com/photo-1522124624696-7ea32eb9592c?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} 
+                            alt={`Additional content image ${i}`} 
+                            className="w-full h-auto aspect-video object-cover rounded-lg"
+                          />
+                        </React.Fragment>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
