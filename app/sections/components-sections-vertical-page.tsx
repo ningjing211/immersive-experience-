@@ -143,7 +143,7 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
       <div className="outer-wrap flex h-full">
         {/* 左側區域 */}
         <div className="left-section w-1/5">
-          {/* 左側 Breadcrumbs 導航 - 更改類名為 main-breadcrumb */}
+          {/* 左側 Breadcrumbs 導航 */}
           <div className="main-breadcrumb pr-8 pt-0">
             <div className="flex flex-col space-y-6 mt-6">
               {articles.map((article, index) => (
@@ -164,38 +164,13 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
 
         {/* 右側區域 */}
         <div className="right-section w-4/5 flex flex-col">
-          {/* 主要分類 Breadcrumbs - 更改類名為 sub-breadcrumb 並移除背景顏色 */}
-          <div className="sub-breadcrumb p-6 mb-8 border-b border-gray-200">
-            <div className="flex space-x-12">
-              {categories.map((category, index) => (
-                <button
-                  key={category}
-                  className={`text-xl font-medium transition-all relative ${
-                    activeCategory === category 
-                      ? 'text-black' 
-                      : 'text-gray-400 hover:text-gray-600'
-                  }`}
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category}
-                  {activeCategory === category && (
-                    <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-black transition-all"></span>
-                  )}
-                  {index === 0 && activeCategory !== category && (
-                    <span className="absolute top-0 -right-6 text-gray-300 text-sm">•</span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* 右側文章內容區域 */}
           <div className="article-section flex-grow">
             <div 
               ref={contentRef}
               className="overflow-y-auto pr-4"
               style={{ 
-                height: 'calc(100vh - 280px)', // 調整高度以適應新的佈局
+                height: 'calc(100vh - 200px)', // 調整回原來的高度
                 overflowY: 'auto',
                 WebkitOverflowScrolling: 'touch'
               }}
