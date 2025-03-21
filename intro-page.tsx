@@ -33,7 +33,7 @@ export default function IntroPage() {
 
         {/* Main title */}
         <div className="text-center">
-          <h2 className="text-7xl md:text-8xl font-extralight tracking-tighter mb-4">One</h2>
+          <h2 className="text-7xl md:text-8xl font-extralight tracking-tighter mb-4">Refined</h2>
           <p className="text-lg font-light tracking-wider text-white/70 max-w-xl">
             Experience a sensory exploration through five dimensions
           </p>
