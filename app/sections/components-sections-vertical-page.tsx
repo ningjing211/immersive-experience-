@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react"
 // import StandardContent from "../content/StandardContent"
 // import NewsContent from "../content/NewsContent"
 import { pageContents } from "../../data/data-section-data"
+import Link from "next/link"
 
 interface VerticalPageProps {
   showVerticalPage: boolean
@@ -171,7 +172,9 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
                           </a>
                         </div>
                         <h2 className="entry-title text-xl font-bold mb-3">
-                          <a href="#" className="text-gray-800 hover:text-blue-600 transition-colors">{post.title}</a>
+                          <Link href={`/article/${post.id}`} className="text-gray-800 hover:text-blue-600 transition-colors">
+                            {post.title}
+                          </Link>
                         </h2>
                       </header>
                       <div className="entry-content clear">
@@ -179,7 +182,9 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
                           {post.snippet}
                         </div>
                         <div className="mt-3">
-                          <a href="#" className="text-blue-600 text-sm font-medium hover:underline">Read More</a>
+                          <Link href={`/article/${post.id}`} className="text-blue-600 text-sm font-medium hover:underline">
+                            Read More
+                          </Link>
                         </div>
                       </div>
                       <div className="cen clearfix mt-4">
@@ -234,7 +239,11 @@ const VerticalPage: React.FC<VerticalPageProps> = ({
                       <li key={post.id} className="flex">
                         <div className="item-thumbnail mr-3">
                           <a href="#">
-                            <img src={post.image} alt={post.title} className="w-20 h-20 object-cover rounded-md" />
+                            <img 
+                              src={`https://picsum.photos/200/200?random=${post.id}`} 
+                              alt={post.title} 
+                              className="w-20 h-20 object-cover rounded-md" 
+                            />
                           </a>
                         </div>
                         <div className="item-title flex-1">

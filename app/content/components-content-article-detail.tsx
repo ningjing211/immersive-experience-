@@ -19,15 +19,12 @@ interface ArticleDetailProps {
 }
 
 const ArticleDetail: React.FC<ArticleDetailProps> = ({ article, relatedArticles = [] }) => {
-  // 模擬文章內容段落
+  // 模擬文章內容段落 - 刪除了您指定的段落
   const paragraphs = [
     "You should never complain, complaining is a weak emotion, you got life, we breathing, we blessed. Surround yourself with angels. They never said winning was easy. Some people can't handle success, I can. Look at the sunset, life is amazing, life is beautiful, life is what you make it. Life is what you make it, so let's make it.",
     "They never said winning was easy. Some people can't handle success, I can. You see the hedges, how I got it shaped up? It's important to shape up your hedges, it's like getting a haircut, stay fresh. I told you all this before, when you have a swimming pool, do not use chlorine, use salt water, the healing, salt water is the healing. Look at the sunset, life is amazing, life is beautiful, life is what you make it. Egg whites, turkey sausage, wheat toast, water. Of course they don't want us to eat our breakfast, so we are going to enjoy our breakfast.",
     "Give thanks to the most high. You do know, you do know that they don't want you to have lunch. I'm keeping it real with you, so what you going do is have lunch. Another one.",
-    "Egg whites, turkey sausage, wheat toast, water. Of course they don't want us to eat our breakfast. It took me twenty five years to get these plants, twenty five years of blood sweat and tears, and I'm never giving up, I'm just getting started. The other day the grass was brown, now it's green because I ain't give up. Never surrender.",
-    "Major key, don't fall for the trap, stay focused. It's the ones closest to you that want to see you fail. Another one. It's important to use cocoa butter. It's the key to more success, why not live smooth? Why live rough? The key to success is to keep your head above the water, never give up. Watch your back, but more importantly when you get out the shower, dry your back, it's a cold world out there.",
-    "In life there will be road blocks but we will over come it. Another one. Learning is cool, but knowing is better, and I know the key to success. The key to more success is to get a massage once a week, very important, major key, cloth talk. I told you all this before, when you have a swimming pool, do not use chlorine, use salt water, the healing, salt water is the healing. I'm up to something. Life is what you make it, so let's make it. The other day the grass was brown, now it's green because I ain't give up. Never surrender.",
-    "You see that bamboo behind me though, you see that bamboo? Ain't nothin' like bamboo. Bless up. Another one. Give thanks to the most high. A major key, never panic. Don't panic, when it gets crazy and rough, don't panic, stay calm. The key to more success is to have a lot of pillows. Eliptical talk. They key is to have every key, the key to open every door. Always remember in the jungle there's a lot of they in there, after you overcome they, you will make it to paradise."
+    "Egg whites, turkey sausage, wheat toast, water. Of course they don't want us to eat our breakfast. It took me twenty five years to get these plants, twenty five years of blood sweat and tears, and I'm never giving up, I'm just getting started. The other day the grass was brown, now it's green because I ain't give up. Never surrender."
   ];
 
   // 模擬引用
@@ -146,123 +143,52 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ article, relatedArticles 
             </div>
 
             {/* 相關文章 */}
-            <div id="related-posts" className="p-6 border-t border-gray-200">
-              <h2 className="text-2xl font-bold mb-6 text-[#333]">Related Articles</h2>
+            <div className="related-posts p-6 border-t border-gray-200">
+              <h2 className="text-xl font-bold mb-6 text-[#333]">Related Articles</h2>
               <div className="grid grid-cols-3 gap-4">
-                {relatedArticles.map((related) => (
-                  <a key={related.id} href="#" className="block group">
+                {/* 預設的相關文章 */}
+                <div className="related-post">
+                  <a href="#" className="block group">
                     <div className="mb-3">
                       <img 
-                        src={related.image} 
-                        alt={related.title} 
-                        className="w-full h-40 object-cover rounded-md"
+                        src="https://picsum.photos/400/300?random=101" 
+                        alt="Seen in Manhattan | Our Summer Street Style Picks" 
+                        className="w-full h-32 object-cover rounded-md group-hover:opacity-90 transition-opacity"
                       />
                     </div>
-                    <div className="text-gray-800 font-medium group-hover:text-blue-600 transition-colors">
-                      {related.title}
-                    </div>
+                    <h3 className="text-sm font-medium text-[#333] group-hover:text-blue-600 transition-colors">
+                      Seen in Manhattan | Our Summer Street Style Picks
+                    </h3>
                   </a>
-                ))}
-              </div>
-            </div>
-
-            {/* 評論區 */}
-            <div id="comments" className="p-6 border-t border-gray-200">
-              <h4 className="text-xl font-bold mb-6 text-[#333]">
-                <span>3 comments</span>
-              </h4>
-              
-              <div className="space-y-6">
-                {/* 評論1 */}
-                <div className="flex">
-                  <div className="flex-shrink-0 mr-4">
-                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxs2nChu1SztGXDypDGVNni8uAfUQwVpXYLX4sSoxYcn3qXLSE8Rvxil5H09Jc49eRyTjAZA-ICZqRQP5KrYf8J_wXUUV2Do_gycozT3lbVUxpyk7C42BOwXthXCxUN7U/s45-c/20200721_102812_0000.png" 
-                         className="w-10 h-10 rounded-full" />
-                  </div>
-                  <div className="flex-grow">
-                    <div className="flex items-center mb-2">
-                      <a href="#" className="font-medium text-gray-800 hover:text-blue-600 transition-colors">Trybizz</a>
-                      <span className="text-gray-500 text-sm ml-2">September 26, 2020 at 6:45 AM</span>
-                    </div>
-                    <p className="text-gray-700">This comment has been removed by the author.</p>
-                    <div className="mt-2">
-                      <a href="#" className="text-gray-500 text-sm hover:text-blue-600 transition-colors">Reply</a>
-                    </div>
-                  </div>
                 </div>
-
-                {/* 評論2 */}
-                <div className="flex">
-                  <div className="flex-shrink-0 mr-4">
-                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEinL0FibPhhhxRXvDihmDWNP1eTtaAKhHeVyCzwL-d3dxg6BjMvex5gX6G5AS8tdkv7Y73s2BM4Lf5i0hGbbfDs_QR-tRybzbZmZ5RGMhIjEbP2WSsL5sqHTEGlOwnXsvA/s45-c/F-Farooqui-+Digital+Marketing+%26+Online+Business+Favicon.png" 
-                         className="w-10 h-10 rounded-full" />
-                  </div>
-                  <div className="flex-grow">
-                    <div className="flex items-center mb-2">
-                      <a href="#" className="font-medium text-gray-800 hover:text-blue-600 transition-colors">Mohd Faraz Farooqui</a>
-                      <span className="text-gray-500 text-sm ml-2">August 16, 2021 at 9:00 PM</span>
+                <div className="related-post">
+                  <a href="#" className="block group">
+                    <div className="mb-3">
+                      <img 
+                        src="https://picsum.photos/400/300?random=102" 
+                        alt="Plantation over sexy girl" 
+                        className="w-full h-32 object-cover rounded-md group-hover:opacity-90 transition-opacity"
+                      />
                     </div>
-                    <p className="text-gray-700">Hey,<br/>I am have download free template of this and using it now but there i have uploaded 4 post and all post shows very big in home page why? I also resize the first image to see if that makes any changes but got no changes.<br/>I wants my post to show like in this demo two(2) post side by side and others are below them.</p>
-                    <div className="mt-2">
-                      <a href="#" className="text-gray-500 text-sm hover:text-blue-600 transition-colors">Reply</a>
-                    </div>
-                  </div>
+                    <h3 className="text-sm font-medium text-[#333] group-hover:text-blue-600 transition-colors">
+                      Plantation over sexy girl
+                    </h3>
+                  </a>
                 </div>
-
-                {/* 評論3 */}
-                <div className="flex">
-                  <div className="flex-shrink-0 mr-4">
-                    <img src="//www.blogger.com/img/blogger_logo_round_35.png" 
-                         className="w-10 h-10 rounded-full" />
-                  </div>
-                  <div className="flex-grow">
-                    <div className="flex items-center mb-2">
-                      <a href="#" className="font-medium text-gray-800 hover:text-blue-600 transition-colors">Kariuki</a>
-                      <span className="text-gray-500 text-sm ml-2">November 11, 2021 at 2:24 PM</span>
+                <div className="related-post">
+                  <a href="#" className="block group">
+                    <div className="mb-3">
+                      <img 
+                        src="https://picsum.photos/400/300?random=103" 
+                        alt="Party all night" 
+                        className="w-full h-32 object-cover rounded-md group-hover:opacity-90 transition-opacity"
+                      />
                     </div>
-                    <p className="text-gray-700">DOWNLOAD BLOGGER TEMPLATES HERE</p>
-                    <div className="mt-2">
-                      <a href="#" className="text-gray-500 text-sm hover:text-blue-600 transition-colors">Reply</a>
-                    </div>
-                  </div>
+                    <h3 className="text-sm font-medium text-[#333] group-hover:text-blue-600 transition-colors">
+                      Party all night
+                    </h3>
+                  </a>
                 </div>
-              </div>
-
-              {/* 評論表單 */}
-              <div className="mt-8">
-                <h4 className="text-xl font-bold mb-4 text-[#333]">Leave a Comment</h4>
-                <form>
-                  <div className="mb-4">
-                    <textarea 
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                      rows={5}
-                      placeholder="Your comment..."
-                    ></textarea>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 mb-4">
-                    <input 
-                      type="text" 
-                      placeholder="Name" 
-                      className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <input 
-                      type="email" 
-                      placeholder="Email" 
-                      className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <input 
-                      type="url" 
-                      placeholder="Website" 
-                      className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-                  <button 
-                    type="submit" 
-                    className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    Post Comment
-                  </button>
-                </form>
               </div>
             </div>
           </div>
@@ -274,7 +200,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ article, relatedArticles 
         <div className="sidebar-container">
           {/* 關於我 */}
           <div className="widget mb-10">
-            <h2 className="title text-xl font-bold pb-2 mb-4 border-b border-gray-200 text-[#333]">ABOUT ME</h2>
+            <h2 className="title text-xl font-bold pb-2 mb-4 border-b border-gray-200 text-[#333]">Author</h2>
             <div className="widget-content">
               <img 
                 src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhj1IJ-Ye479-qyMk3TKwCHC_m4rnul0uyRqGKUW3Gl6Vc99sgTwPzTyMW46pGtudJ5xpfr8kOaifvy7VdtUAys7ohH_kqkQw47vPPxC3xqqpCqYeDqbElExAHulCCOSmEvNjjatF4UY2sL/s1600/about2-1.jpg" 
@@ -300,7 +226,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ article, relatedArticles 
                     <div className="item-thumbnail mr-3">
                       <a href="#">
                         <img 
-                          src={`https://source.unsplash.com/random/300x300?sig=${i}`} 
+                          src={`https://picsum.photos/200/200?random=${i+10}`} 
                           alt={`Popular post ${i}`} 
                           className="w-20 h-20 object-cover rounded-md" 
                         />
